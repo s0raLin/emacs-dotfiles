@@ -28,6 +28,7 @@
 ;; 启动完成后将垃圾回收阈值改回正常水平（8MB）
 (add-hook 'emacs-startup-hook
           (lambda () (setq gc-cons-threshold (* 8 1024 1024))))
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
