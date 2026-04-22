@@ -1,14 +1,5 @@
-# Emacs build artifacts
-eln-cache/
+*
 
-# Package installation directory
-elpa/
-
-# Auto-save files
-auto-save-list/
-
-# Backup files
-*~
-
-# Backup directory
-\#*#
+!lisp/
+!init.el
+!early-init.el
