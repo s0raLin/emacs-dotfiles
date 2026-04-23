@@ -39,69 +39,6 @@
   (evil-snipe-mode 1)
   (evil-snipe-override-mode 1))
 
-;; ─────────────────────────────────────────
-;; Leader key（SPC，类似 Neovim）
-;; ─────────────────────────────────────────
-(use-package general
-  :config
-  (general-create-definer my/leader
-    :states '(normal visual)
-    :prefix "SPC")
-
-  (my/leader
-    ;; 文件
-    "ff" 'find-file
-    "fr" 'recentf-open-files
-    "fs" 'save-buffer
-    ;; Buffer
-    "bb" 'switch-to-buffer
-    "bd" 'kill-current-buffer
-    ;; 窗口
-    "wv" 'split-window-right
-    "ws" 'split-window-below
-    "wd" 'delete-window
-    "wh" 'windmove-left
-    "wl" 'windmove-right
-    "wk" 'windmove-up
-    "wj" 'windmove-down
-    ;; 搜索
-    "/"  'consult-ripgrep
-    ;; LSP（在 rust buffer 中生效）
-    "ca" 'eglot-code-actions
-    "cr" 'eglot-rename
-    "cf" 'eglot-format-buffer
-    ;; Git
-    "gs" 'magit-status))
-
-;; ─────────────────────────────────────────
-;; 文件搜索 / 模糊查找
-;; ─────────────────────────────────────────
-(use-package vertico
-  :init (vertico-mode))
-
-(use-package consult
-  :bind ("C-s" . consult-line))
-
-(use-package orderless
-  :config
-  (setq completion-styles '(orderless basic)))
-
-;; ─────────────────────────────────────────
-;; which-key（按键提示，和 Neovim which-key 一样）
-;; ─────────────────────────────────────────
-(use-package which-key
-  :config
-  (which-key-mode)
-  (setq which-key-idle-delay 0.3))
-
-;; ─────────────────────────────────────────
-;; 其他 QoL
-;; ─────────────────────────────────────────
-(use-package magit)
-
-;; 相对行号
-(setq display-line-numbers-type 'relative)
-
 ;; --- 全局缩进设置 ---
 (setq-default indent-tabs-mode nil) ; 将 Tab 转换为空格
 (setq-default tab-width 2)          ; Tab 宽度设为 2

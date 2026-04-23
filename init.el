@@ -18,12 +18,15 @@
 
 ;; 3. 调用模块
 (require 'setup-ui)      ; 加载界面配置
+(require 'setup-keybindings) ;快捷键映射（Evil
 (require 'setup-editor)  ; 加载编辑器行为（如 Evil）
 (require 'setup-appearance) ; 字体和视觉配置
 (require 'setup-rust)  ; Rust开发配置
 (require 'setup-go) ; Go 开发配置
 (require 'setup-corfu) ; 自动补全UI
 (require 'setup-markdown) ; Markdown
+(require 'setup-tools) ; 工具类
+
 
 ;; 启动完成后将垃圾回收阈值改回正常水平（8MB）
 (add-hook 'emacs-startup-hook
