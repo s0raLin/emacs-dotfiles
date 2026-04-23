@@ -1,52 +1,44 @@
-;;; -*- lexical-binding: t; -*-
-;;; setup-rust.el --- Rust 开发配置
+;;; setup-rust.el
 
-;; 1. 语法高亮 (推荐方案)
-;; 如果你使用的是 Emacs 29+, 推荐直接用内置 treesit
-(use-package tree-sitter
+;; 1. 语法高亮
+(use-package treesit-auto
   :ensure t
   :config
-  (global-tree-sitter-mode)
-  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode))
+  (setq treesit-auto-install 'prompt)
+  (global-treesit-auto-mode))
 
-;; 修复报错：手动从 github 安装或确保 melpa 可用
-;; 如果还是报错 unavailable，可以尝试删除这个包，改用下面的 treesit-auto
-(use-package tree-sitter-langs
-  :ensure t
-  :after tree-sitter)
-
-;; 2. LSP 核心配置
+;; 2. LSP 核心 (必须配置 Hook 才能启动)
 (use-package lsp-mode
   :ensure t
-  :commands lsp
+  :commands (lsp lsp-deferred)
+  :hook ((rustic-mode . lsp-deferred)      ; 进入 rustic-mode 时启动 lsp
+         (rust-ts-mode . lsp-deferred))    ; 进入 treesit 模式时启动 lsp
   :custom
+  (lsp-inlay-hint-enable t) ; 核心设置：全局开启内嵌提示
   (lsp-rust-analyzer-cargo-watch-command "clippy")
-  (lsp-rust-analyzer-display-inlay-hints t)
-  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "always")
-  (lsp-rust-analyzer-display-chaining-hints t)
-  (lsp-idle-delay 0.5)
+  (lsp-completion-provider :none)          ; 关键：为了让 Corfu 接管提示
+  (lsp-idle-delay 0.1)                     ; 加快提示速度
   :config
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
+
+;; 3. LSP UI (负责报错的红线和浮窗)
 (use-package lsp-ui
   :ensure t
-  :commands lsp-ui-mode
   :custom
-  (lsp-ui-doc-enable t)
-  (lsp-ui-peek-enable t))
+  (lsp-ui-sideline-enable t)               ; 行末显示错误
+  (lsp-ui-sideline-show-diagnostics t)
+  (lsp-ui-doc-enable t))                   ; 鼠标悬停显示文档
 
-;; 3. Rustic 配置 (它会处理大部分 Rust 逻辑)
+;; 4. Rustic
 (use-package rustic
   :ensure t
+  :custom
+  (rustic-format-on-save t)
+  (rustic-lsp-client 'lsp-mode)
   :bind (:map rustic-mode-map
-              ("M-j" . lsp-dwim)
-              ("C-c C-c a" . lsp-execute-code-action))
-  :config
-  (setq rustic-lsp-client 'lsp-mode) ; 强制指定使用 lsp-mode
-  (add-hook 'rustic-mode-hook #'lsp-deferred)
-  (setq rustic-format-on-save t)
-  ;; 如果你的 rust-analyzer 在环境变量里，这一行通常不需要手动设
-  ;; (setq rustic-analyzer-command '("rust-analyzer"))
-  )
+              ("M-j" . lsp-dwim)           ; 现在这个函数能找到了
+              ("C-c f" . rustic-format-buffer)
+              ("C-c C-c a" . lsp-execute-code-action)))
 
 (provide 'setup-rust)
