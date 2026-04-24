@@ -18,7 +18,7 @@
   (setq dashboard-banner-logo-title "Hi s0raLin, ready to hack?")
   :config
   (dashboard-setup-startup-hook)
-  (setq dashboard-startup-banner (expand-file-name "logo.png" user-emacs-directory)) ;; 后续可以换成你的 Miku png 路径
+  (setq dashboard-startup-banner (expand-file-name "assets/logo.png" user-emacs-directory)) ;; 后续可以换成你的 Miku png 路径
 
   (setq dashboard-items nil) ;; 设为 nil 则不显示任何列表
   ;; (setq dashboard-items '((recents  . 5)
